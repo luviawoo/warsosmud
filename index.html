@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>War Sosial Muda HIMPS 2026</title>
+<style>
+  :root{
+    --ink:#171a21;
+    --paper:#eef0e9;
+    --line:#171a21;
+    --flag:#c1401e;
+    --flag-deep:#8f2b12;
+    --go:#1f6f4a;
+    --muted:#6b6f63;
+    --panel:#ffffff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family: 'Courier New', ui-monospace, monospace;
+    background:var(--paper);
+    color:var(--ink);
+    min-height:100vh;
+  }
+  .tape{
+    background:var(--ink);
+    color:var(--paper);
+    padding:6px 16px;
+    font-size:12px;
+    letter-spacing:0.04em;
+    display:flex;
+    justify-content:space-between;
+    overflow:hidden;
+    white-space:nowrap;
+  }
+  header{
+    padding:28px 20px 18px;
+    border-bottom:3px solid var(--ink);
+  }
+  h1{
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size:clamp(34px,8vw,58px);
+    margin:0;
+    line-height:0.95;
+    letter-spacing:-0.01em;
+  }
+  h1 .strike{
+    color:var(--flag);
+  }
+  .sub{
+    margin-top:8px;
+    font-size:14px;
+    color:var(--muted);
+    max-width:520px;
+  }
+  nav{
+    display:flex;
+    border-bottom:3px solid var(--ink);
+  }
+  nav button{
+    flex:1;
+    padding:12px 8px;
+    background:var(--paper);
+    border:none;
+    border-right:2px solid var(--ink);
+    font-family:inherit;
+    font-size:14px;
+    font-weight:bold;
+    cursor:pointer;
+    color:var(--muted);
+  }
+  nav button:last-child{border-right:none;}
+  nav button.active{
+    background:var(--ink);
+    color:var(--paper);
+  }
+  main{
+    max-width:820px;
+    margin:0 auto;
+    padding:20px;
+  }
+  .card{
+    background:var(--panel);
+    border:2px solid var(--ink);
+    padding:18px;
+    margin-bottom:16px;
+  }
+  .card h2{
+    font-family: Georgia, serif;
+    font-size:18px;
+    margin:0 0 12px;
+    border-bottom:1px solid var(--ink);
+    padding-bottom:8px;
+  }
+  label{
+    display:block;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--muted);
+    margin-bottom:4px;
+    margin-top:12px;
+  }
+  label:first-child{margin-top:0;}
+  input[type=text], select, textarea{
+    width:100%;
+    padding:9px 10px;
+    border:1.5px solid var(--ink);
+    background:var(--paper);
+    font-family:inherit;
+    font-size:14px;
+    color:var(--ink);
+  }
+  textarea{resize:vertical;min-height:90px;}
+  .row{display:flex;gap:10px;flex-wrap:wrap;}
+  .row > *{flex:1;min-width:140px;}
+  button.act{
+    margin-top:14px;
+    padding:10px 18px;
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    font-family:inherit;
+    font-weight:bold;
+    font-size:13px;
+    cursor:pointer;
+    letter-spacing:0.03em;
+  }
+  button.act:hover{background:var(--flag-deep);}
+  button.act.ghost{
+    background:transparent;
+    color:var(--ink);
+    border:1.5px solid var(--ink);
+  }
+  button.act.danger{background:var(--flag);}
+  button.act:disabled{opacity:0.35;cursor:not-allowed;background:var(--muted);}
+  .divlist{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .divchip{
+    border:1.5px solid var(--ink);
+    padding:5px 10px;
+    font-size:12px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .divchip input{width:120px;padding:3px 6px;font-size:12px;}
+  .divchip button{
+    background:none;border:none;color:var(--flag);cursor:pointer;font-weight:bold;font-size:14px;line-height:1;
+  }
+  .phase-toggle{display:flex;gap:0;border:1.5px solid var(--ink);}
+  .phase-toggle button{
+    flex:1;padding:9px;background:var(--paper);border:none;font-family:inherit;font-size:12px;font-weight:bold;cursor:pointer;color:var(--muted);
+  }
+  .phase-toggle button.on{background:var(--ink);color:var(--paper);}
+  .phase-toggle button:not(:last-child){border-right:1.5px solid var(--ink);}
+
+  .status-line{
+    font-size:12px;
+    color:var(--muted);
+    margin-bottom:12px;
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;
+  }
+  .dot{
+    width:7px;height:7px;border-radius:50%;background:var(--go);display:inline-block;margin-right:5px;
+    animation:pulse 1.6s infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+
+  ul.roster{list-style:none;margin:0;padding:0;}
+  ul.roster li{
+    border-bottom:1.5px solid var(--ink);
+    padding:12px 0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  ul.roster li:last-child{border-bottom:none;}
+  .name{font-weight:bold;font-size:15px;}
+  .picks{font-size:11px;color:var(--muted);margin-top:2px;}
+  .pick-tag{
+    display:inline-block;border:1px solid var(--ink);padding:1px 6px;margin-right:4px;font-size:10px;
+  }
+  .claimed{
+    font-size:11px;
+    background:var(--go);
+    color:#fff;
+    padding:4px 9px;
+    font-weight:bold;
+  }
+  .claimed.mine{background:var(--ink);}
+  .empty{
+    padding:30px 10px;text-align:center;color:var(--muted);font-size:13px;
+  }
+  .claim-btn{
+    background:var(--flag);color:#fff;border:none;padding:8px 14px;font-family:inherit;font-weight:bold;font-size:12px;cursor:pointer;
+  }
+  .claim-btn:hover{background:var(--flag-deep);}
+  .claim-btn:disabled{background:var(--muted);cursor:not-allowed;opacity:0.5;}
+  select#myDivSel{
+    max-width:220px;
+    display:inline-block;
+    width:auto;
+  }
+  .toast{
+    position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+    background:var(--ink);color:var(--paper);padding:10px 18px;font-size:13px;
+    border:2px solid var(--ink);opacity:0;pointer-events:none;transition:opacity .25s;
+    z-index:99;
+  }
+  .toast.show{opacity:1;}
+  .hint{font-size:11px;color:var(--muted);margin-top:6px;}
+  #lockBanner{
+    padding:14px 16px;
+  }
+  #lockBanner.locked{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  #lockBanner.locked .lock-title{color:var(--flag);}
+  #lockBanner.open{background:#eaf3ee;border-color:var(--go);}
+  .lock-title{font-weight:bold;font-size:14px;margin-bottom:2px;}
+  .lock-count{font-size:22px;font-weight:bold;letter-spacing:0.02em;margin-top:4px;}
+  .lock-status-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;}
+  .lock-pill{font-size:11px;font-weight:bold;padding:4px 10px;border:1.5px solid var(--ink);}
+  .lock-pill.on{background:var(--flag);color:#fff;border-color:var(--flag);}
+  .lock-pill.off{background:var(--go);color:#fff;border-color:var(--go);}
+  .pin-overlay{
+    display:none;
+    position:fixed;inset:0;
+    background:rgba(23,26,33,0.75);
+    z-index:200;
+    align-items:center;justify-content:center;
+    padding:20px;
+  }
+  .pin-overlay.show{display:flex;}
+  .pin-box{
+    background:var(--panel);
+    border:2px solid var(--ink);
+    padding:22px;
+    max-width:320px;
+    width:100%;
+  }
+  .pin-box input{
+    margin-top:14px;
+    font-size:24px;
+    letter-spacing:10px;
+    text-align:center;
+  }
+  .pin-box.shake{animation:shake 0.3s;}
+  @keyframes shake{
+    0%,100%{transform:translateX(0);}
+    25%{transform:translateX(-6px);}
+    75%{transform:translateX(6px);}
+  }
+</style>
+</head>
+<body>
+
+<div class="tape" id="tape">MEMUAT DATA... · MEMUAT DATA... · MEMUAT DATA...</div>
+
+<header>
+  <h1>WAR SOSIAL MUDA<br><span class="strike">HIMPS 2026</span></h1>
+  <div class="sub">Rebutan Calon Sosmud antar divisi, siapa cepat dia dapat. Semua panitia buka halaman ini di device masing-masing.</div>
+</header>
+
+<nav>
+  <button data-tab="war" class="active">WAR ROOM</button>
+  <button data-tab="admin">SETUP (PANITIA)</button>
+</nav>
+
+<main>
+
+  <!-- WAR TAB -->
+  <section id="tab-war">
+    <div class="card">
+      <h2>Posisi kamu</h2>
+      <label for="myDivSel">Kamu mewakili divisi</label>
+      <select id="myDivSel"></select>
+      <div class="hint">Pilih divisi kamu, lalu klik tombol AMBIL di calon yang divisimu incar.</div>
+    </div>
+
+    <div class="card" id="lockBanner" style="display:none;"></div>
+
+    <div class="status-line">
+      <span><span class="dot"></span>live &mdash; update tiap beberapa detik</span>
+      <span id="phaseLabel"></span>
+    </div>
+
+    <div class="card">
+      <h2>Daftar Calon Sosmud</h2>
+      <input type="text" id="searchBox" placeholder="Cari nama Calon Sosmud..." style="margin-bottom:14px;">
+      <ul class="roster" id="roster"></ul>
+    </div>
+  </section>
+
+  <!-- ADMIN TAB -->
+  <section id="tab-admin" style="display:none;">
+
+    <div class="card">
+      <h2>0 &middot; Kunci / Buka War</h2>
+      <div class="lock-status-row">
+        <span>Status sekarang:</span>
+        <span class="lock-pill" id="lockStatusPill">-</span>
+      </div>
+      <button class="act danger" id="lockNowBtn" style="margin-top:0;">Kunci Sekarang</button>
+      <button class="act ghost" id="unlockNowBtn">Buka Sekarang</button>
+
+      <label style="margin-top:18px;">Atau jadwalkan buka otomatis pada</label>
+      <input type="datetime-local" id="scheduleOpenAt">
+      <button class="act" id="scheduleBtn">Jadwalkan Buka Otomatis</button>
+      <div class="hint">Sebelum waktu ini, tombol AMBIL di semua divisi otomatis terkunci. Begitu waktu tercapai, war kebuka sendiri tanpa perlu klik apapun.</div>
+    </div>
+
+    <div class="card">
+      <h2>1 &middot; Fase War</h2>
+      <div class="phase-toggle">
+        <button id="phasePrio">Prioritas Pilihan 1 dulu</button>
+        <button id="phaseFree">War Bebas (P1 &amp; P2)</button>
+      </div>
+      <div class="hint">Fase "Prioritas" &rarr; divisi cuma bisa klaim calon yang naruh mereka di Pilihan 1. Fase "Bebas" &rarr; divisi bisa klaim calon yang naruh mereka di Pilihan 1 ATAU Pilihan 2.</div>
+    </div>
+
+    <div class="card">
+      <h2>2 &middot; Daftar Divisi (8 divisi)</h2>
+      <div class="divlist" id="divList"></div>
+      <div class="row" style="margin-top:12px;">
+        <input type="text" id="newDivName" placeholder="Nama divisi baru">
+        <button class="act ghost" id="addDivBtn" style="margin-top:0;">+ Tambah Divisi</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>3 &middot; Input Calon Sosmud</h2>
+      <label for="cName">Nama Calon Sosmud</label>
+      <input type="text" id="cName" placeholder="Nama lengkap">
+      <div class="row">
+        <div>
+          <label for="cP1">Pilihan 1</label>
+          <select id="cP1"></select>
+        </div>
+        <div>
+          <label for="cP2">Pilihan 2</label>
+          <select id="cP2"></select>
+        </div>
+      </div>
+      <button class="act" id="addCandBtn">+ Tambah ke Roster</button>
+
+      <label style="margin-top:20px;">Atau import cepat (paste, 1 baris per calon)</label>
+      <textarea id="bulkImport" placeholder="Format: Nama, Pilihan1, Pilihan2&#10;Contoh:&#10;Budi Santoso, Marketing, Design&#10;Sri Wahyuni, HR, Marketing"></textarea>
+      <button class="act ghost" id="bulkBtn">Import Semua</button>
+    </div>
+
+    <div class="card">
+      <h2>4 &middot; Kontrol</h2>
+      <button class="act danger" id="resetClaimsBtn">Reset Semua Klaim (mulai war ulang)</button>
+      <button class="act ghost" id="wipeAllBtn">Hapus Semua Data (roster + divisi)</button>
+    </div>
+
+  </section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<div class="pin-overlay" id="pinOverlay">
+  <div class="pin-box">
+    <h2 style="margin:0 0 4px;">Khusus Panitia</h2>
+    <div class="hint" style="margin-top:0;">Masukkan PIN untuk masuk ke tab SETUP.</div>
+    <input type="password" inputmode="numeric" maxlength="4" id="pinInput" placeholder="&bull; &bull; &bull; &bull;">
+    <div class="row" style="margin-top:12px;">
+      <button class="act ghost" id="pinCancel" style="margin-top:0;">Batal</button>
+      <button class="act" id="pinSubmit" style="margin-top:0;">Masuk</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DATA_KEY = 'warstaff:data';
+let state = {
+  phase: 'prio', // 'prio' | 'free'
+  lockUntil: null, // null = terbuka; ISO string = terkunci sampai waktu itu
+  divisions: ['Sekretaris','Bendahara','PSDM','Pendidikan','Humas','Budaya','Kesehatan','Medkominfo','Lingkungan Alam'],
+  candidates: makeInitialCandidates()
+};
+
+function makeInitialCandidates(){
+  // [nama, pilihan1, pilihan2-or-empty] -- nama divisi sudah dirapikan ke 9 nama baku
+  const raw = [
+    ["Rahma Naila Amarty","Pendidikan","Kesehatan"],
+    ["Fahda Ayesha Nada Syakila","PSDM","Kesehatan"],
+    ["Dhira Ayu Maulida","Lingkungan Alam","Kesehatan"],
+    ["Almeira Winda Putri","Humas","Pendidikan"],
+    ["Atika Laksmi Dewi","Humas","Lingkungan Alam"],
+    ["Aulia Sophie Andrea","Medkominfo","Humas"],
+    ["Naurah Nur Archita","Humas","Pendidikan"],
+    ["Wahyu Kusumaningrum","Lingkungan Alam",""],
+    ["Marsha Alvina Azzahra","Medkominfo","Humas"],
+    ["Bellinda Ridi Febriana","PSDM","Lingkungan Alam"],
+    ["Reydviya Queenza Bagaskoro","PSDM","Humas"],
+    ["Lintang Anindya Queena Aisha","Pendidikan","Lingkungan Alam"],
+    ["Naila Katon Nurinda","PSDM","Humas"],
+    ["Jihan Safa Maharani","Sekretaris","Humas"],
+    ["Deana Lathifah","Lingkungan Alam","Humas"],
+    ["A'ina Putri Rizqiyani","Lingkungan Alam",""],
+    ["Najwa Arvembie","Lingkungan Alam",""],
+    ["Kayla Syifa Fauziah","Humas","Pendidikan"],
+    ["Anindya Putri W.","Budaya","Medkominfo"],
+    ["Dhimas Ardhika Budi Fahry","Pendidikan","Lingkungan Alam"],
+    ["Nadya Chelsea Salsabila","Lingkungan Alam","Medkominfo"],
+    ["Maulida Rizka Amalia Putri","PSDM","Medkominfo"],
+    ["Althaira Hanin Najihah","PSDM","Pendidikan"],
+    ["Eka Lubna Zahra","Pendidikan","Lingkungan Alam"],
+    ["Adiva Arminda Safwana","PSDM","Pendidikan"],
+    ["Nesya Kirana Larasati","Pendidikan","Humas"],
+    ["Reisya Retnaning Ratri","PSDM","Budaya"],
+    ["Givela Iyuthane Purba","Lingkungan Alam",""],
+    ["Ihda Nihlatul 'Izzah","Bendahara","PSDM"],
+    ["Armilda Clarissa Adryyani P","Lingkungan Alam",""],
+    ["Aziz Eka Ananta","Humas","Lingkungan Alam"],
+    ["Kalila Anisa Larasati","Budaya","Kesehatan"],
+    ["Zahra Jasminta Rachmajulia","Lingkungan Alam",""],
+    ["Fitri Melany Putri","Pendidikan","Lingkungan Alam"],
+    ["Afiya Wirastuti","Humas","Lingkungan Alam"],
+    ["Natania Yosephin Sitorus","PSDM","Lingkungan Alam"],
+    ["Janur Nanda Trival","Humas","Pendidikan"],
+    ["Karina Nazwa Widodo","Humas","Lingkungan Alam"],
+    ["Revanika Putri Az Zahra","Humas","Lingkungan Alam"],
+    ["Naura Maharani Rifai","Medkominfo","Pendidikan"],
+    ["Soraya Salwa","Lingkungan Alam","PSDM"],
+    ["Syifa Haya Arafah","PSDM",""],
+    ["Azzahra Zalfa Alika","Bendahara","Lingkungan Alam"],
+    ["El Shaday Patricia Tolukun","Lingkungan Alam","Medkominfo"],
+    ["Najwa Atma Lintang","Pendidikan","Lingkungan Alam"],
+    ["Ghania Alfara L","Humas","Lingkungan Alam"],
+    ["Azzra Efa Fhonna","Humas","PSDM"],
+    ["Fadilla Rafidani Isnadhia","Humas","PSDM"],
+    ["Luthfiana Suci Ramadhani","Humas","PSDM"],
+    ["Karina Efie Liya Setyawati","PSDM","Pendidikan"],
+    ["Andita Novel P","Kesehatan","PSDM"],
+    ["Ni Made Dita Yudiastuti","Lingkungan Alam","PSDM"],
+    ["Rachmalina Latifa Dewi","Lingkungan Alam",""],
+    ["Revalia Carissa Darmawan","PSDM","Kesehatan"],
+    ["Nabila Najwasiyifa Auliya","Lingkungan Alam","Sekretaris"],
+    ["Andien Putri Nahdiaturramah","Lingkungan Alam",""],
+    ["Aurinna Gita Locita Putri","Humas","Budaya"],
+    ["Qarira Deva Butsaina","Pendidikan","Medkominfo"],
+    ["Jihan Rohidatul Aisy","Pendidikan","Lingkungan Alam"],
+    ["Shofi Rizquna Amalia","Medkominfo",""],
+    ["Firza Aqila Syava","Humas","Kesehatan"],
+    ["Ghita Putri Azharia","Budaya","PSDM"],
+    ["Adiza Mutiara Yudana","PSDM","Pendidikan"],
+    ["Alya Syaumi Fitri","PSDM","Pendidikan"],
+    ["Anggun Putri Ramadhani","Pendidikan","Humas"],
+    ["Tsalasatun Syarafina Mawarid","Pendidikan","Humas"],
+    ["Asmaul Husna","Lingkungan Alam","Pendidikan"],
+    ["Dini Raniah Listiyani","Lingkungan Alam","Humas"],
+    ["Aviyanna Pawitan Rasjid","Humas","Budaya"],
+    ["Mella Widiyastuti","Humas","Lingkungan Alam"],
+    ["Aulia Rahmah","Budaya","Pendidikan"],
+    ["Anita Nur Aulia","Medkominfo","PSDM"],
+    ["Effel Abdi Irdiansyah","Medkominfo","Lingkungan Alam"],
+    ["Arida Hayu Sabila","Lingkungan Alam","Budaya"],
+    ["Retnofatimah Dwi Setiapamuji","Lingkungan Alam","Medkominfo"],
+    ["Belinda Julia","Humas","PSDM"],
+    ["Shafira Az Zahra Khaerani","PSDM",""],
+    ["Galih Rifqi Aunurrahman","Kesehatan","Pendidikan"],
+    ["Nadiya Faiz","Pendidikan","Sekretaris"],
+    ["Nasya Almira Husna","Medkominfo","Pendidikan"],
+    ["Alya Shafa Eddelianna","Pendidikan","Budaya"],
+    ["Faradiva Anjani Putri Wibowo","Humas","Pendidikan"],
+    ["Ghafira Rasyidiniah","Medkominfo","Budaya"],
+    ["Belva Ayu Widyadhana","Humas","PSDM"],
+    ["Zulfa Haniatuz Zahra","Kesehatan","PSDM"],
+    ["Keisya Avrill Aluna Adwila Utomo","Pendidikan","Bendahara"],
+    ["Raihan Ahmad Rabbani","Pendidikan","PSDM"],
+    ["Gina Aulia Rahmayanti","Budaya","Lingkungan Alam"],
+    ["Miaisalma Bulqis Nabila","Pendidikan","Budaya"],
+    ["Putri Hotmaida Veronicha Siadari","PSDM","Humas"],
+    ["Patricia Anela Vega Situmorang","Pendidikan","Lingkungan Alam"]
+  ];
+  return raw.map((r,i)=>({
+    id: 'seed_' + i,
+    name: r[0], p1: r[1], p2: r[2] || '',
+    status: 'open', claimedBy: null, claimedAt: null
+  }));
+}
+let myDivision = localStorage.getItem('warstaff:mydiv') || ''; // ok to keep locally, it's just a UI selection, not data storage
+let pollTimer = null;
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+async function loadState(){
+  try{
+    const res = await window.storage.get(DATA_KEY, true);
+    if(res && res.value){
+      const parsed = JSON.parse(res.value);
+      state = Object.assign({phase:'prio',lockUntil:null,divisions:[],candidates:[]}, parsed);
+    }
+  }catch(e){
+    // key doesn't exist yet, keep default state
+  }
+  render();
+}
+
+async function saveState(){
+  try{
+    const result = await window.storage.set(DATA_KEY, JSON.stringify(state), true);
+    if(!result){ toast('Gagal menyimpan, coba lagi'); }
+  }catch(e){
+    toast('Gagal menyimpan: ' + e.message);
+  }
+}
+
+// ---------- TABS ----------
+const PANITIA_PIN = '8181';
+let panitiaUnlocked = sessionStorage.getItem('warstaff:panitia') === '1';
+
+document.querySelectorAll('nav button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    if(btn.dataset.tab === 'admin' && !panitiaUnlocked){
+      openPinOverlay();
+      return;
+    }
+    switchTab(btn.dataset.tab);
+  });
+});
+
+function switchTab(tab){
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+  document.getElementById('tab-war').style.display = tab==='war' ? '' : 'none';
+  document.getElementById('tab-admin').style.display = tab==='admin' ? '' : 'none';
+}
+
+function openPinOverlay(){
+  document.getElementById('pinOverlay').classList.add('show');
+  const input = document.getElementById('pinInput');
+  input.value='';
+  setTimeout(()=>input.focus(), 50);
+}
+function closePinOverlay(){
+  document.getElementById('pinOverlay').classList.remove('show');
+}
+
+document.getElementById('pinCancel').addEventListener('click', closePinOverlay);
+
+document.getElementById('pinSubmit').addEventListener('click', submitPin);
+document.getElementById('pinInput').addEventListener('keydown', (e)=>{
+  if(e.key==='Enter') submitPin();
+});
+
+function submitPin(){
+  const val = document.getElementById('pinInput').value.trim();
+  if(val === PANITIA_PIN){
+    panitiaUnlocked = true;
+    sessionStorage.setItem('warstaff:panitia','1');
+    closePinOverlay();
+    switchTab('admin');
+  }else{
+    const box = document.querySelector('.pin-box');
+    box.classList.remove('shake');
+    void box.offsetWidth;
+    box.classList.add('shake');
+    document.getElementById('pinInput').value='';
+    toast('PIN salah');
+  }
+}
+
+function isWarLocked(){
+  if(!state.lockUntil) return false;
+  return Date.now() < Date.parse(state.lockUntil);
+}
+
+function fmtDateTime(iso){
+  try{
+    return new Date(iso).toLocaleString('id-ID', {dateStyle:'medium', timeStyle:'short'});
+  }catch(e){ return iso; }
+}
+
+function renderLockBanner(){
+  const el = document.getElementById('lockBanner');
+  const locked = isWarLocked();
+  el.style.display = '';
+  el.className = 'card ' + (locked ? 'locked' : 'open');
+  if(locked){
+    const remaining = Date.parse(state.lockUntil) - Date.now();
+    el.innerHTML = `
+      <div class="lock-title">🔒 War belum dibuka</div>
+      <div>Akan otomatis terbuka pada ${fmtDateTime(state.lockUntil)}</div>
+      <div class="lock-count">${fmtCountdown(remaining)}</div>
+    `;
+  }else{
+    el.innerHTML = `<div class="lock-title" style="color:var(--go);">🔓 War sudah dibuka &mdash; silakan klaim!</div>`;
+  }
+}
+
+function fmtCountdown(ms){
+  if(ms<=0) return '00:00:00';
+  const totalSec = Math.floor(ms/1000);
+  const h = Math.floor(totalSec/3600);
+  const m = Math.floor((totalSec%3600)/60);
+  const s = totalSec%60;
+  const pad = n=>String(n).padStart(2,'0');
+  return (h>0 ? h+':' : '') + pad(m)+':'+pad(s);
+}
+
+function renderLockAdmin(){
+  const pill = document.getElementById('lockStatusPill');
+  const locked = isWarLocked();
+  pill.textContent = locked ? `TERKUNCI sampai ${fmtDateTime(state.lockUntil)}` : 'TERBUKA';
+  pill.className = 'lock-pill ' + (locked ? 'on' : 'off');
+}
+
+// ---------- RENDER ----------
+function render(){
+  renderTape();
+  renderPhase();
+  renderLockBanner();
+  renderLockAdmin();
+  renderDivSelectors();
+  renderDivChips();
+  renderRoster();
+}
+
+function renderTape(){
+  const openCount = state.candidates.filter(c=>c.status==='open').length;
+  const claimedCount = state.candidates.length - openCount;
+  document.getElementById('tape').textContent =
+    `${state.candidates.length} CALON SOSMUD TOTAL · ${openCount} MASIH TERBUKA · ${claimedCount} SUDAH DIKLAIM ·`.repeat(3);
+}
+
+function renderPhase(){
+  document.getElementById('phasePrio').classList.toggle('on', state.phase==='prio');
+  document.getElementById('phaseFree').classList.toggle('on', state.phase==='free');
+  document.getElementById('phaseLabel').textContent = state.phase==='prio'
+    ? 'FASE: Prioritas Pilihan 1' : 'FASE: War Bebas (P1 & P2)';
+}
+
+function renderDivSelectors(){
+  const sel = document.getElementById('myDivSel');
+  const prev = myDivision;
+  sel.innerHTML = '<option value="">-- pilih divisi --</option>' +
+    state.divisions.map(d=>`<option value="${escAttr(d)}">${esc(d)}</option>`).join('');
+  if(state.divisions.includes(prev)){ sel.value = prev; }
+
+  const p1 = document.getElementById('cP1');
+  const p2 = document.getElementById('cP2');
+  const opts = state.divisions.map(d=>`<option value="${escAttr(d)}">${esc(d)}</option>`).join('');
+  p1.innerHTML = opts;
+  p2.innerHTML = '<option value="">(tidak ada pilihan 2)</option>' + opts;
+}
+
+function renderDivChips(){
+  const wrap = document.getElementById('divList');
+  wrap.innerHTML = '';
+  state.divisions.forEach((d, i)=>{
+    const chip = document.createElement('div');
+    chip.className = 'divchip';
+    chip.innerHTML = `<span>${esc(d)}</span><button data-idx="${i}" title="Hapus divisi">&times;</button>`;
+    chip.querySelector('button').addEventListener('click', async ()=>{
+      if(!confirm(`Hapus "${d}" dari daftar divisi?`)) return;
+      state.divisions.splice(i,1);
+      await saveState();
+      render();
+    });
+    wrap.appendChild(chip);
+  });
+}
+
+let searchQuery = '';
+
+function renderRoster(){
+  const ul = document.getElementById('roster');
+  if(state.candidates.length===0){
+    ul.innerHTML = '<div class="empty">Belum ada Calon Sosmud. Tambahkan lewat tab SETUP.</div>';
+    return;
+  }
+  const q = searchQuery.trim().toLowerCase();
+  const filtered = q ? state.candidates.filter(c=>c.name.toLowerCase().includes(q)) : state.candidates;
+
+  if(filtered.length===0){
+    ul.innerHTML = `<div class="empty">Gak ada Calon Sosmud dengan nama "${esc(searchQuery.trim())}". Coba cek ejaannya.</div>`;
+    return;
+  }
+
+  ul.innerHTML = '';
+  filtered.forEach(c=>{
+    const li = document.createElement('li');
+    const isOpen = c.status !== 'claimed';
+    const locked = isWarLocked();
+    const eligible = isOpen && !locked && myDivision && (
+      state.phase === 'prio' ? c.p1 === myDivision : (c.p1 === myDivision || c.p2 === myDivision)
+    );
+
+    let rightHTML = '';
+    if(!isOpen){
+      const mine = c.claimedBy === myDivision;
+      rightHTML = `<span class="claimed ${mine?'mine':''}">${mine?'KAMU AMBIL':'DIAMBIL: '+esc(c.claimedBy)}</span>`;
+    }else{
+      rightHTML = `<button class="claim-btn" ${eligible?'':'disabled'}>AMBIL</button>`;
+    }
+
+    li.innerHTML = `
+      <div>
+        <div class="name">${esc(c.name)}</div>
+        <div class="picks">
+          <span class="pick-tag">P1: ${esc(c.p1)}</span>
+          <span class="pick-tag">P2: ${c.p2 ? esc(c.p2) : '-'}</span>
+        </div>
+      </div>
+      ${rightHTML}
+    `;
+    if(isOpen){
+      const btn = li.querySelector('.claim-btn');
+      btn.addEventListener('click', ()=>claim(c.id));
+    }
+    ul.appendChild(li);
+  });
+}
+
+function esc(s){ return String(s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function escAttr(s){ return esc(s); }
+
+// ---------- CLAIM (with re-check to reduce race conditions) ----------
+async function claim(candidateId){
+  if(!myDivision){ toast('Pilih divisi kamu dulu di atas'); return; }
+  // refetch latest before claiming to reduce double-claim risk
+  await loadStateSilent();
+  if(isWarLocked()){ toast('War belum dibuka panitia, sabar ya!'); render(); return; }
+  const cand = state.candidates.find(c=>c.id===candidateId);
+  if(!cand){ toast('Calon Sosmud tidak ditemukan'); return; }
+  if(cand.status==='claimed'){
+    toast(`Yah, keduluan! ${cand.name} sudah diambil ${cand.claimedBy}`);
+    render();
+    return;
+  }
+  const eligible = state.phase==='prio' ? cand.p1===myDivision : (cand.p1===myDivision || cand.p2===myDivision);
+  if(!eligible){ toast('Calon ini bukan pilihan divisimu di fase ini'); return; }
+
+  cand.status = 'claimed';
+  cand.claimedBy = myDivision;
+  cand.claimedAt = Date.now();
+  await saveState();
+  toast(`✓ ${cand.name} berhasil diambil ${myDivision}!`);
+  render();
+}
+
+async function loadStateSilent(){
+  try{
+    const res = await window.storage.get(DATA_KEY, true);
+    if(res && res.value){
+      const parsed = JSON.parse(res.value);
+      state = Object.assign({phase:'prio',lockUntil:null,divisions:[],candidates:[]}, parsed);
+    }
+  }catch(e){ /* no data yet */ }
+}
+
+// ---------- ADMIN ACTIONS ----------
+document.getElementById('lockNowBtn').addEventListener('click', async ()=>{
+  // lock indefinitely (100 years ahead) until admin unlocks or schedules a real time
+  const farFuture = new Date(Date.now() + 100*365*24*60*60*1000).toISOString();
+  state.lockUntil = farFuture;
+  await saveState();
+  render();
+  toast('War dikunci. Divisi belum bisa klaim.');
+});
+
+document.getElementById('unlockNowBtn').addEventListener('click', async ()=>{
+  state.lockUntil = null;
+  await saveState();
+  render();
+  toast('War dibuka sekarang!');
+});
+
+document.getElementById('scheduleBtn').addEventListener('click', async ()=>{
+  const val = document.getElementById('scheduleOpenAt').value;
+  if(!val){ toast('Pilih tanggal & jam dulu'); return; }
+  const iso = new Date(val).toISOString();
+  if(Date.parse(iso) <= Date.now()){ toast('Waktu harus di masa depan'); return; }
+  state.lockUntil = iso;
+  await saveState();
+  render();
+  toast(`Dijadwalkan buka otomatis: ${fmtDateTime(iso)}`);
+});
+
+document.getElementById('searchBox').addEventListener('input', (e)=>{
+  searchQuery = e.target.value;
+  renderRoster();
+});
+
+document.getElementById('myDivSel').addEventListener('change', (e)=>{
+  myDivision = e.target.value;
+  localStorage.setItem('warstaff:mydiv', myDivision);
+  render();
+});
+
+document.getElementById('phasePrio').addEventListener('click', async ()=>{
+  state.phase='prio'; await saveState(); render();
+});
+document.getElementById('phaseFree').addEventListener('click', async ()=>{
+  state.phase='free'; await saveState(); render();
+});
+
+document.getElementById('addDivBtn').addEventListener('click', async ()=>{
+  const input = document.getElementById('newDivName');
+  const name = input.value.trim();
+  if(!name) return;
+  if(state.divisions.includes(name)){ toast('Divisi sudah ada'); return; }
+  state.divisions.push(name);
+  input.value='';
+  await saveState();
+  render();
+});
+
+document.getElementById('addCandBtn').addEventListener('click', async ()=>{
+  const name = document.getElementById('cName').value.trim();
+  const p1 = document.getElementById('cP1').value;
+  const p2 = document.getElementById('cP2').value;
+  if(!name){ toast('Isi nama Calon Sosmud dulu'); return; }
+  if(!p1){ toast('Tambahkan divisi dulu di atas'); return; }
+  state.candidates.push({
+    id: 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+    name, p1, p2, status:'open', claimedBy:null, claimedAt:null
+  });
+  document.getElementById('cName').value='';
+  await saveState();
+  render();
+  toast(`${name} ditambahkan ke roster`);
+});
+
+document.getElementById('bulkBtn').addEventListener('click', async ()=>{
+  const raw = document.getElementById('bulkImport').value.trim();
+  if(!raw) return;
+  const lines = raw.split('\n').map(l=>l.trim()).filter(Boolean);
+  let added = 0, skipped = 0;
+  lines.forEach(line=>{
+    const parts = line.split(',').map(p=>p.trim());
+    if(parts.length < 2){ skipped++; return; }
+    const name = parts[0];
+    const p1 = parts[1] || '';
+    const p2 = parts[2] || '';
+    if(!state.divisions.includes(p1)){ skipped++; return; }
+    if(p2 && !state.divisions.includes(p2)){ skipped++; return; }
+    state.candidates.push({
+      id: 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+      name, p1, p2, status:'open', claimedBy:null, claimedAt:null
+    });
+    added++;
+  });
+  document.getElementById('bulkImport').value='';
+  await saveState();
+  render();
+  toast(`${added} Calon Sosmud berhasil diimport${skipped?`, ${skipped} baris dilewati (cek nama divisi)`:''}`);
+});
+
+document.getElementById('resetClaimsBtn').addEventListener('click', async ()=>{
+  if(!confirm('Reset semua klaim? Roster & divisi tetap, tapi status kembali "belum diambil".')) return;
+  state.candidates.forEach(c=>{ c.status='open'; c.claimedBy=null; c.claimedAt=null; });
+  await saveState();
+  render();
+  toast('Semua klaim direset. War bisa dimulai lagi.');
+});
+
+document.getElementById('wipeAllBtn').addEventListener('click', async ()=>{
+  if(!confirm('Hapus SEMUA data (roster + divisi)? Tidak bisa dibatalkan.')) return;
+  state = {phase:'prio', divisions:[], candidates:[]};
+  await saveState();
+  render();
+  toast('Semua data dihapus.');
+});
+
+// ---------- INIT & POLLING ----------
+loadState();
+pollTimer = setInterval(async ()=>{
+  // only auto-refresh when on war tab to avoid clobbering admin form inputs
+  const onWarTab = document.getElementById('tab-war').style.display !== 'none';
+  if(onWarTab){ await loadStateSilent(); render(); }
+}, 3000);
+
+// fast local ticker just for the countdown display (no network call)
+setInterval(()=>{
+  const onWarTab = document.getElementById('tab-war').style.display !== 'none';
+  if(onWarTab && state.lockUntil){ render(); }
+}, 1000);
+</script>
+
+</body>
+</html>
